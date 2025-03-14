@@ -1,1 +1,4 @@
-# cloud-agnostic
+# A Distributed Cloud-Agnostic Pipeline for Multi-Cloud Environments
+
+With many cloud providers to choose from, and complex deployment pipelines, one important barrier for entry that must be overcome in cloud computing is ensuring infrastructure is not placed solely in a single cloud provider while simultaneously making deployment to the cloud seamless for developers. Multi-cloud environments ensure that provider downtime or price hikes in a single cloud provider do not affect the availability, performance, or cost of a service. Additionally, smooth deployment across multiple cloud providers ensures this method can be easily maintained. Proposed is a cloud-agnostic pipeline to achieve a solution that supports seamless deployments across multiple cloud environments. Thus, allowing organizations to choose the best cloud for their needs at a certain time without being bound to a single vendor.
+

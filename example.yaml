@@ -1,0 +1,16 @@
+---
+providers:
+  - gcp
+  - aws
+  - azu
+service: "web-app"
+region: "us-east1"
+project-id: "cloud-agnostic-test-1"
+docker:
+  region: "us-east1"
+  repo: "agno-test"
+  image: "agno-test-image-1"
+keys:
+  - gcp: "/sw/gcp.json"
+  - aws: "/sw/aws.json"
+  - azu: "/sw/azu.json"

@@ -1,0 +1,74 @@
+# prerequisites 
+# install azure cli
+# create azure account and create a subscription plan
+# should be listed under az account list --output table
+# then create a "resource group" in the portal as well (e.g. mygroup)
+
+# login
+az login
+
+# create registry
+az acr create --name <myregistry> --resource-group mygroup --sku standard --admin-enabled true
+
+# (optional) List registries with
+az acr list --output table
+
+# build image
+az acr build --file Dockerfile --registry <myregistry> --image <myimage> .
+
+# the above command should spit out a url like '<myregistry>.azurecr.io/<myimage>' or similar
+# (only for tf): replace the <myregistry>.azurecr.io in the main.py azure_capps (container apps) 
+# replace subscription id with yours (use az account list --output table to list subscriptions)
+
+######## az cli steps
+
+az account set --subscription "xxx-xxx-xxx"
+az group create --name mygroup --location eastus
+az containerapp env create \
+  --name example-env \
+  --resource-group mygroup \
+  --location eastus
+
+az acr update -n <myregistry> --admin-enabled true
+
+# to get credentials:
+az acr credential show --name <myregistry> 
+
+# use credentials in the below command 
+az containerapp create \
+  --name example-container-app \
+  --resource-group mygroup \
+  --environment example-env \
+  --image <myregistry>.azurecr.io/<myimage>:latest \
+  --target-port 8080 \
+  --ingress 'external' \
+  --registry-server <myregistry>.azurecr.io \
+  --registry-username <your-acr-username> \
+  --registry-password <your-acr-password>
+
+# show the url
+
+az containerapp show \
+  --name example-container-app \
+  --resource-group mygroup \
+  --query properties.configuration.ingress.fqdn \
+  --output tsv
+
+
+
+######## terraform steps (don't work)
+# then run:
+
+terraform init -upgrade
+terraform plan
+terraform apply
+
+
+# debugging
+# try deleting .terraform and .tfstate hidden files and re-running the above 3 commands
+
+# if it says "resource needs to be imported..." then run the below (change the subscription id and resource group name)
+
+terraform import azurerm_resource_group.rg /subscriptions/xxx-xxx-xxx-xxx/mygroup
+
+# if it says "Error: creating Managed Environment ... The subscription is not registered to use namespace 'Microsoft.App'" 
